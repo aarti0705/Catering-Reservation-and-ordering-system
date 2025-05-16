@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Summary</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://img.freepik.com/premium-photo/colorful-fast-food-combo_198067-330.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .overlay-bg {
+      background-color: rgba(0, 0, 0, 0.7);
+      min-height: 100vh;
+    }
+    ::placeholder {
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay-bg">
+    <div class="max-w-6xl mx-auto p-6">
+      <!-- Navbar -->
+      <header class="bg-black bg-opacity-80 shadow-md sticky top-0 z-50 mb-8">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center text-white">
+          <h1 class="text-2xl font-bold">Indian Catering</h1>
+          <nav class="flex gap-4 items-center">
+            <a href="index.html#home" class="hover:underline">Home</a>
+            <button id="logoutBtn" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">Logout</button>
+          </nav>
+        </div>
+      </header>
+
+      <h1 class="text-3xl font-bold mb-6 text-yellow-400">Order Summary</h1>
+      <h2 id="categoryName" class="text-2xl font-semibold mb-6 text-yellow-300"></h2>
+
+      <!-- Cart Items -->
+      <div id="cartItems" class="bg-gray-800 bg-opacity-60 rounded-lg p-6 mb-8 text-white">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-gray-700">
+              <th class="text-left py-2 px-4 text-yellow-300">Item</th>
+              <th class="text-right py-2 px-4 text-yellow-300">Price</th>
+              <th class="text-right py-2 px-4 text-yellow-300">Qty</th>
+              <th class="text-right py-2 px-4 text-yellow-300">Subtotal</th>
+              <th class="text-right py-2 px-4 text-yellow-300">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="cartItemsBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Empty Cart Message -->
+      <div id="emptyCart" class="text-center py-10 hidden">
+        <p class="text-xl text-white">Your cart is empty</p>
+        <a href="index.html" class="mt-4 inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded">
+          Browse Menu
+        </a>
+      </div>
+
+      <!-- Order Details -->
+      <div class="mt-10 text-white" id="orderDetailsSection">
+        <div class="mb-8">
+          <h2 class="text-xl font-semibold mb-2">Instructions</h2>
+          <textarea id="instructions" rows="4" class="w-full p-3 rounded bg-gray-800 border border-gray-700 text-white" placeholder="Add any cooking instructions or preferences..."></textarea>
+        </div>
+
+        <div class="mb-8">
+          <h2 class="text-xl font-semibold mb-2">Delivery Address</h2>
+          <textarea id="address" rows="4" class="w-full p-3 rounded bg-gray-800 border border-gray-700 text-white" placeholder="Enter your full address..." required></textarea>
+        </div>
+
+        <div class="mb-8">
+          <h2 class="text-xl font-semibold mb-2">Contact Information</h2>
+          <input type="text" id="name" class="w-full p-3 rounded bg-gray-800 border border-gray-700 text-white mb-3" placeholder="Your Name" required>
+          <input type="tel" id="phone" class="w-full p-3 rounded bg-gray-800 border border-gray-700 text-white" placeholder="Phone Number" required>
+        </div>
+      </div>
+
+      <!-- Total Section -->
+      <div class="mt-8 flex justify-between items-center text-white" id="totalSection">
+        <div>
+          <h2 class="text-2xl font-bold">Total: <span id="totalAmount">Rs 0</span></h2>
+          <p class="text-sm text-gray-400">(Inclusive of all taxes)</p>
+        </div>
+        <button id="confirmOrderBtn" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg text-lg">
+          Confirm Order
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black bg-opacity-90 text-white text-center py-4">
+      &copy; 2025 Indian Catering Services. All rights reserved.
+    </footer>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmationMessage" class="fixed top-0 left-0 w-full bg-yellow-500 text-white p-4 text-lg font-bold hidden z-50">
+    <div class="flex justify-between items-center">
+      <p>Your order has been placed successfully!</p>
+      <button id="okButton" class="bg-white text-green-500 px-4 py-2 rounded">OK</button>
+    </div>
+  </div>
+
+  <!-- Firebase Integration -->
+  <script type="module">
+     // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-analytics.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyBPrgSHAhXY24YcIOiSDo2ABlvHJZ2xg4c",
+        authDomain: "catering-2bd1a.firebaseapp.com",
+        projectId: "catering-2bd1a",
+        storageBucket: "catering-2bd1a.firebasestorage.app",
+        messagingSenderId: "325903490545",
+        appId: "1:325903490545:web:c7d026d050e44de00c3850",
+        measurementId: "G-GCS39TVLM2"
+      };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+
+    async function saveOrderToFirestore(orderDetails) {
+      try {
+        const docRef = await addDoc(collection(db, "orders"), orderDetails);
+        console.log("Order saved with ID:", docRef.id);
+      } catch (e) {
+        console.error("Error saving order:", e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const cartItemsBody = document.getElementById('cartItemsBody');
+      const totalAmountDisplay = document.getElementById('totalAmount');
+      const categoryNameDisplay = document.getElementById('categoryName');
+      const emptyCart = document.getElementById('emptyCart');
+      const orderDetailsSection = document.getElementById('orderDetailsSection');
+      const totalSection = document.getElementById('totalSection');
+      const confirmOrderBtn = document.getElementById('confirmOrderBtn');
+      const confirmationMessage = document.getElementById('confirmationMessage');
+      const okButton = document.getElementById('okButton');
+
+      const orderData = JSON.parse(localStorage.getItem('selectedOrder'));
+      let cartData = orderData?.items || [];
+      let category = orderData?.category || '';
+
+      categoryNameDisplay.textContent = category;
+
+      function renderCart() {
+        cartItemsBody.innerHTML = '';
+        let total = 0;
+
+        cartData.forEach(item => {
+          const subtotal = item.price * item.quantity;
+          total += subtotal;
+
+          const row = document.createElement('tr');
+          row.className = 'border-b border-gray-700 hover:bg-gray-700 hover:bg-opacity-30';
+          row.innerHTML = `
+            <td class="py-3 px-4">${item.name}</td>
+            <td class="py-3 px-4 text-right">Rs ${item.price}</td>
+            <td class="py-3 px-4 text-right">
+              <div class="flex items-center justify-end">
+                <button class="bg-yellow-400 text-black font-bold px-2 rounded" onclick="changeQty('${item.name}', -1)">-</button>
+                <span class="mx-2">${item.quantity}</span>
+                <button class="bg-yellow-400 text-black font-bold px-2 rounded" onclick="changeQty('${item.name}', 1)">+</button>
+              </div>
+            </td>
+            <td class="py-3 px-4 text-right">Rs ${subtotal}</td>
+            <td class="py-3 px-4 text-right">
+              <button class="bg-red-500 hover:bg-red-600 text-white font-bold px-3 py-1 rounded text-sm" onclick="removeItem('${item.name}')">Remove</button>
+            </td>
+          `;
+          cartItemsBody.appendChild(row);
+        });
+
+        const totalRow = document.createElement('tr');
+        totalRow.className = 'font-bold';
+        totalRow.innerHTML = `
+          <td class="py-3 px-4 text-right" colspan="3">Total:</td>
+          <td class="py-3 px-4 text-right">Rs ${total}</td>
+          <td></td>
+        `;
+        cartItemsBody.appendChild(totalRow);
+        totalAmountDisplay.textContent = `Rs ${total}`;
+      }
+
+      window.changeQty = function(itemName, delta) {
+        const index = cartData.findIndex(item => item.name === itemName);
+        if (index !== -1) {
+          cartData[index].quantity += delta;
+          if (cartData[index].quantity <= 0) {
+            cartData.splice(index, 1);
+          }
+          localStorage.setItem('selectedOrder', JSON.stringify({ category, items: cartData }));
+          renderCart();
+          if (cartData.length === 0) {
+            emptyCart.classList.remove('hidden');
+            orderDetailsSection.classList.add('hidden');
+            totalSection.classList.add('hidden');
+          }
+        }
+      }
+
+      window.removeItem = function(itemName) {
+        cartData = cartData.filter(item => item.name !== itemName);
+        localStorage.setItem('selectedOrder', JSON.stringify({ category, items: cartData }));
+        renderCart();
+        if (cartData.length === 0) {
+          emptyCart.classList.remove('hidden');
+          orderDetailsSection.classList.add('hidden');
+          totalSection.classList.add('hidden');
+        }
+      }
+
+      confirmOrderBtn.addEventListener('click', () => {
+        const instructions = document.getElementById('instructions').value;
+        const address = document.getElementById('address').value;
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+
+        if (!address || !name || !phone) {
+          alert("Please fill in your name, phone, and address before placing the order.");
+          return;
+        }
+
+        const orderDetails = {
+          name,
+          phone,
+          address,
+          instructions,
+          category,
+          items: cartData,
+          total: totalAmountDisplay.textContent,
+          timestamp: new Date().toISOString()
+        };
+
+        saveOrderToFirestore(orderDetails);
+
+        confirmationMessage.classList.remove('hidden');
+        localStorage.removeItem('selectedOrder');
+      });
+
+      okButton.addEventListener('click', () => {
+        confirmationMessage.classList.add('hidden');
+        window.location.href = "index.html";
+      });
+
+      if (cartData.length > 0) {
+        renderCart();
+      } else {
+        emptyCart.classList.remove('hidden');
+        orderDetailsSection.classList.add('hidden');
+        totalSection.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

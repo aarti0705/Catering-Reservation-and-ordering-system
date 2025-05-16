@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catering Types</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://img.freepik.com/premium-photo/colorful-fast-food-combo_198067-330.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .overlay-bg {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+
+<body class="text-white">
+  <div class="overlay-bg min-h-screen">
+    <!-- ✅ Navbar with Logout -->
+    <header class="bg-black bg-opacity-80 shadow-md sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center text-white">
+        <h1 class="text-2xl font-bold">Indian Catering</h1>
+        <nav class="flex gap-4 items-center">
+          <a href="index.html#home" class="hover:underline">Home</a>
+          <button onclick="handleLogout()" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">Logout</button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- 🌟 Catering Type Section -->
+    <section class="py-16 px-4">
+      <div class="max-w-6xl mx-auto text-center">
+        <h2 class="text-4xl font-bold text-yellow-400 mb-10">Choose a Catering Type</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          
+          <!-- Wedding -->
+          <a href="catering-packages.html?type=wedding" class="bg-white bg-opacity-10 rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-2">
+            <img src="https://www.candidshutters.com/maintenance/wp-content/uploads/2024/06/Best-wedding-photographers-India-Top-5-destination-wedding-photographers-Indian-weddings-2.jpg" alt="Wedding" class="w-full h-48 object-cover rounded-t-lg">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold text-yellow-300">Wedding</h3>
+              <p class="text-sm text-gray-300">Grand and elegant feasts tailored for your special day.</p>
+            </div>
+          </a>
+
+          <!-- Birthday -->
+          <a href="catering-packages.html?type=birthday" class="bg-white bg-opacity-10 rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-2">
+            <img src="https://5.imimg.com/data5/SELLER/Default/2022/4/SK/RX/LH/149898692/birthday-photography-service-500x500.png" alt="Birthday" class="w-full h-48 object-cover rounded-t-lg">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold text-yellow-300">Birthday</h3>
+              <p class="text-sm text-gray-300">Fun-filled birthday menus with festive treats.</p>
+            </div>
+          </a>
+
+          <!-- Festival -->
+          <a href="catering-packages.html?type=festival" class="bg-white bg-opacity-10 rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-2">
+            <img src="https://cybernag.in/wp-content/uploads/2024/07/diwali-blog-image.jpg" alt="Festival" class="w-full h-48 object-cover rounded-t-lg">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold text-yellow-300">Festival</h3>
+              <p class="text-sm text-gray-300">Celebrate Indian festivals with traditional cuisine.</p>
+            </div>
+          </a>
+
+          <!-- Anniversary -->
+          <a href="catering-packages.html?type=anniversary" class="bg-white bg-opacity-10 rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-2">
+            <img src="https://easy-peasy.ai/cdn-cgi/image/quality=80,format=auto,width=700/https://media.easy-peasy.ai/73c37c0d-4f9d-4880-b75b-1e25e2a534c8/49da3b10-f4ad-489a-a2c4-e33e5669d665.png" alt="Anniversary" class="w-full h-48 object-cover rounded-t-lg">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold text-yellow-300">Anniversary</h3>
+              <p class="text-sm text-gray-300">Cherish love with romantic meals and desserts.</p>
+            </div>
+          </a>
+
+          <!-- Engagement -->
+          <a href="catering-packages.html?type=engagement" class="bg-white bg-opacity-10 rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-2">
+            <img src="https://www.thestatesman.com/wp-content/uploads/2020/02/QT-O4-9.jpg" alt="Engagement" class="w-full h-48 object-cover rounded-t-lg">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold text-yellow-300">Engagement</h3>
+              <p class="text-sm text-gray-300">Pre-wedding moments with classy culinary delights.</p>
+            </div>
+          </a>
+
+          <!-- Special Occasion -->
+          <a href="catering-packages.html?type=special" class="bg-white bg-opacity-10 rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-2">
+            <img src="https://c4.wallpaperflare.com/wallpaper/600/321/110/color-colours-festival-hindu-wallpaper-preview.jpg" alt="Special Occasion" class="w-full h-48 object-cover rounded-t-lg">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold text-yellow-300">Special Occasion</h3>
+              <p class="text-sm text-gray-300">Tailored menus for every unique event you celebrate.</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ✅ Footer -->
+    <footer class="bg-black bg-opacity-90 text-white text-center py-4">
+      &copy; 2025 Indian Catering Services. All rights reserved.
+    </footer> 
+  </div>
+
+  <script>
+    function handleLogout() {
+      // If you're using Firebase Auth:
+      // firebase.auth().signOut().then(() => window.location.href = "index.html");
+
+      // For placeholder behavior:
+      alert("You have been logged out.");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Category Details</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://img.freepik.com/premium-photo/colorful-fast-food-combo_198067-330.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .overlay-bg {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+
+<body class="text-white">
+  <div class="overlay-bg min-h-screen">
+    
+    <!-- ✅ Navbar -->
+    <header class="bg-black bg-opacity-80 shadow-md sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center text-white">
+        <h1 class="text-2xl font-bold">Indian Catering</h1>
+        <nav class="flex gap-4 items-center">
+          <a href="index.html#home" class="hover:underline">Home</a>
+          <button id="logoutBtn" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">Logout</button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- 🌟 Category Detail Section -->
+    <main class="max-w-6xl mx-auto py-12 px-4">
+      <h1 id="categoryTitle" class="text-4xl font-bold text-yellow-400 text-center mb-10">Category Name</h1>
+
+      <div id="foodItems" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Food items rendered here -->
+      </div>
+
+      <p id="categoryDescription" class="text-center mt-10 text-gray-300"></p>
+    </main>
+
+    <!-- Place Your Order Button -->
+    <div class="text-center mt-8">
+      <button onclick="submitOrder()" class="bg-yellow-500 text-black px-6 py-3 rounded-lg text-lg font-bold hover:bg-yellow-600">
+        Place Your Order
+      </button>
+    </div>    
+
+
+    <!-- ✅ Footer -->
+    <footer class="bg-black bg-opacity-90 text-white text-center py-4">
+      &copy; 2025 Indian Catering Services. All rights reserved.
+    </footer>
+
+  </div>
+
+  <script>
+    const foodData = {
+      "Veg-Indian-Dishes": {
+        name: "Veg Indian Dishes",
+        items: {
+          "Paneer Butter Masala": {
+            image: "https://www.cookwithmanali.com/wp-content/uploads/2014/10/Paneer-Butter-Masala-500x375.jpg",
+            quantity: 0,
+            price: 220,
+            recipe: "Soft paneer cubes cooked in a rich and creamy tomato-based gravy."
+          },
+          "Palak Paneer": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/palak-paneer-recipe.jpg",
+            quantity: 0,
+            price: 200,
+            recipe: "Paneer cubes simmered in a spiced spinach gravy."
+          },
+          "Paneer Tikka": {
+            image: "https://www.vegrecipesofindia.com/wp-content/uploads/2021/02/paneer-tikka-1.jpg",
+            quantity: 0,
+            price: 180,
+            recipe: "Marinated paneer cubes grilled or baked, served with mint chutney."
+          },
+          "Shahi Paneer": {
+            image: "https://myfoodstory.com/wp-content/uploads/2021/06/Shahi-Paneer-1.jpg",
+            quantity: 0,
+            price: 240,
+            recipe: "Paneer cooked in a royal, creamy sauce made with nuts and spices."
+          },
+          "Naan": {
+            image: "https://www.indianveggiedelight.com/wp-content/uploads/2021/09/naan-bread-featured.jpg",
+            quantity: 0,
+            price: 50,
+            recipe: "Soft, leavened flatbread, often served with curries."
+          },
+          "Roti (Chapati)": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/06/roti-recipe.jpg",
+            quantity: 0,
+            price: 20,
+            recipe: "Whole wheat unleavened flatbread, a staple in Indian meals."
+          },
+          "Paratha": {
+            image: "https://www.cookwithmanali.com/wp-content/uploads/2019/09/Laccha-Paratha-500x500.jpg",
+            quantity: 0,
+            price: 40,
+            recipe: "Flaky, layered flatbread, often stuffed with various fillings."
+          },
+          "Missi Roti": {
+            image: "https://www.archanaskitchen.com/images/archanaskitchen/1-Author/shaheen_ali/Missi_Roti.jpg",
+            quantity: 0,
+            price: 30,
+            recipe: "Flatbread made with whole wheat and gram flour, seasoned with spices."
+          },
+          "Aloo Paratha": {
+            image: "https://www.vegrecipesofindia.com/wp-content/uploads/2021/06/aloo-paratha-1.jpg",
+            quantity: 0,
+            price: 60,
+            recipe: "Stuffed flatbread filled with spiced mashed potatoes."
+          },
+          "Gobi Paratha": {
+            image: "https://www.vegrecipesofindia.com/wp-content/uploads/2021/06/gobi-paratha-1.jpg",
+            quantity: 0,
+            price: 60,
+            recipe: "Flatbread stuffed with spiced grated cauliflower."
+          },
+          "Aloo Gobi": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/06/aloo-gobi-recipe.jpg",
+            quantity: 0,
+            price: 150,
+            recipe: "Dry curry made with potatoes and cauliflower, seasoned with spices."
+          },
+          "Bhindi Masala": {
+            image: "https://www.vegrecipesofindia.com/wp-content/uploads/2021/06/bhindi-masala-1.jpg",
+            quantity: 0,
+            price: 140,
+            recipe: "Stir-fried okra cooked with onions and spices."
+          },
+          "Chana Masala": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/06/chana-masala-recipe.jpg",
+            quantity: 0,
+            price: 130,
+            recipe: "Chickpeas cooked in a tangy tomato and onion gravy."
+          },
+          "Baingan Bharta": {
+            image: "https://www.cookwithmanali.com/wp-content/uploads/2020/01/Baingan-Bharta-500x500.jpg",
+            quantity: 0,
+            price: 160,
+            recipe: "Roasted and mashed eggplant cooked with spices and onions."
+          },
+          "Mixed Vegetable Curry": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/mixed-vegetable-curry.jpg",
+            quantity: 0,
+            price: 170,
+            recipe: "A medley of seasonal vegetables cooked in a spiced gravy."
+          },
+          "Kachumber Salad": {
+            image: "https://www.vegrecipesofindia.com/wp-content/uploads/2019/01/kachumber-salad-recipe.jpg",
+            quantity: 0,
+            price: 80,
+            recipe: "Salad made with cucumbers, tomatoes, onions, and lemon juice."
+          },
+          "Raita": {
+            image: "https://www.indianveggiedelight.com/wp-content/uploads/2021/04/cucumber-raita-featured.jpg",
+            quantity: 0,
+            price: 60,
+            recipe: "Yogurt-based side dish with cucumber and spices."
+          },
+          "Mango Pickle": {
+            image: "https://www.archanaskitchen.com/images/archanaskitchen/1-Author/Karthika_Gopalakrishnan/Aam_Ka_Achar_Mango_Pickle.jpg",
+            quantity: 0,
+            price: 40,
+            recipe: "Tangy and spicy pickle made from raw mangoes."
+          },
+          "Lemon Pickle": {
+            image: "https://www.vegrecipesofindia.com/wp-content/uploads/2021/05/lemon-pickle-recipe-1.jpg",
+            quantity: 0,
+            price: 40,
+            recipe: "Zesty pickle made from lemons, seasoned with spices."
+          },
+          "Mixed Vegetable Pickle": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/04/veg-pickle.jpg",
+            quantity: 0,
+            price: 50,
+            recipe: "Spicy and tangy pickle made from assorted vegetables."
+          }
+        }
+      },
+      "Non-Veg-Indian-Dishes": {
+        name: "Non-Veg Indian Dishes",
+        items: {
+          "Butter Chicken": {
+            image: "https://www.cubesnjuliennes.com/wp-content/uploads/2020/07/Chicken-Makhani-Recipe-500x500.jpg",
+            quantity: 0,
+            price: 280,
+            recipe: "Creamy tomato curry with tender chicken."
+          },
+          "Chicken Tikka Masala": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/06/Chicken-Tikka-Masala-2-3-500x500.jpg",
+            quantity: 0,
+            price: 260,
+            recipe: "Grilled chicken chunks in creamy spiced sauce."
+          },
+          "Kadai Chicken": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/kadai-chicken-recipe.jpg",
+            quantity: 0,
+            price: 270,
+            recipe: "Chicken with bell peppers and aromatic spices."
+          },
+          "Chicken Biryani": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2019/04/chicken-biryani-recipe-500x500.jpg",
+            quantity: 0,
+            price: 250,
+            recipe: "Aromatic rice layered with spiced chicken."
+          },
+          "Jeera Rice": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/05/jeera-rice-recipe-500x500.jpg",
+            quantity: 0,
+            price: 120,
+            recipe: "Fragrant basmati rice with cumin seeds."
+          },
+          "Pulao": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/05/vegetable-pulao-recipe-500x500.jpg",
+            quantity: 0,
+            price: 140,
+            recipe: "Mild spiced rice dish with veggies."
+          },
+          "Lemon Rice": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/04/lemon-rice-recipe-500x500.jpg",
+            quantity: 0,
+            price: 110,
+            recipe: "Zesty rice with lemon juice and spices."
+          },
+          "Coconut Rice": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/05/coconut-rice-recipe-500x500.jpg",
+            quantity: 0,
+            price: 130,
+            recipe: "Rice infused with fresh coconut and mustard seeds."
+          },
+          "Hyderabadi Biryani": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/hyderabadi-biryani-recipe-500x500.jpg",
+            quantity: 0,
+            price: 300,
+            recipe: "Richly spiced layered rice and meat dish."
+          },
+          "Mutton Biryani": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/mutton-biryani-recipe-500x500.jpg",
+            quantity: 0,
+            price: 350,
+            recipe: "Biryani with marinated mutton and basmati rice."
+          },
+          "Mutton Rogan Josh": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/04/Mutton-Rogan-Josh-2-3-500x500.jpg",
+            quantity: 0,
+            price: 320,
+            recipe: "Slow-cooked Kashmiri-style mutton curry."
+          },
+          "Fish Curry": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/fish-curry-recipe-500x500.jpg",
+            quantity: 0,
+            price: 240,
+            recipe: "Fish cooked in spicy coconut or tomato-based gravy."
+          },
+          "Prawn Masala": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/prawn-masala-recipe-500x500.jpg",
+            quantity: 0,
+            price: 280,
+            recipe: "Juicy prawns in a spicy onion-tomato masala."
+          },
+          "Mutton Korma": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2021/01/Mutton-Korma-2-3-500x500.jpg",
+            quantity: 0,
+            price: 310,
+            recipe: "Mutton in creamy, nutty, aromatic gravy."
+          },
+          "Tandoori Chicken": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/tandoori-chicken-recipe-500x500.jpg",
+            quantity: 0,
+            price: 290,
+            recipe: "Marinated chicken grilled in tandoor with smoky flavor."
+          },
+          "Naan": {
+            image: "https://www.indianveggiedelight.com/wp-content/uploads/2021/09/naan-bread-featured.jpg",
+            quantity: 0,
+            price: 50,
+            recipe: "Soft, leavened flatbread cooked in a tandoor."
+          },
+          "Roti (Chapati)": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/06/roti-recipe.jpg",
+            quantity: 0,
+            price: 20,
+            recipe: "Whole wheat flatbread, simple and staple."
+          },
+          "Missi Roti": {
+            image: "https://www.archanaskitchen.com/images/archanaskitchen/1-Author/shaheen_ali/Missi_Roti.jpg",
+            quantity: 0,
+            price: 30,
+            recipe: "Spiced whole wheat + gram flour roti."
+          },
+          "Paratha": {
+            image: "https://www.cookwithmanali.com/wp-content/uploads/2019/09/Laccha-Paratha-500x500.jpg",
+            quantity: 0,
+            price: 40,
+            recipe: "Layered flatbread, crisp and soft."
+          },
+          "Onion Salad": {
+            image: "https://www.vegrecipesofindia.com/wp-content/uploads/2019/01/kachumber-salad-recipe.jpg",
+            quantity: 0,
+            price: 40,
+            recipe: "Fresh onions with lemon and chilies."
+          },
+          "Cucumber Salad": {
+            image: "https://www.indianveggiedelight.com/wp-content/uploads/2021/04/cucumber-raita-featured.jpg",
+            quantity: 0,
+            price: 50,
+            recipe: "Crisp cucumber slices with light spices."
+          },
+          "Mango Pickle": {
+            image: "https://www.archanaskitchen.com/images/archanaskitchen/1-Author/Karthika_Gopalakrishnan/Aam_Ka_Achar_Mango_Pickle.jpg",
+            quantity: 0,
+            price: 40,
+            recipe: "Spicy and tangy traditional mango pickle."
+          },
+          "Lemon Pickle": {
+            image: "https://www.vegrecipesofindia.com/wp-content/uploads/2021/05/lemon-pickle-recipe-1.jpg",
+            quantity: 0,
+            price: 40,
+            recipe: "Zesty lemon pickle with Indian spices."
+          },
+          "Mixed Vegetable Pickle": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/04/veg-pickle.jpg",
+            quantity: 0,
+            price: 50,
+            recipe: "Assorted vegetables in a spicy tangy mix."
+          }
+        }
+      },
+      "Chinese-Dishes": {
+        name: "Chinese Dishes",
+        items: {
+          "Chilli Chicken": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2021/04/Chilli-Chicken-2-3-500x500.jpg",
+            quantity: 0,
+            price: 220,
+            recipe: "Spicy chicken pieces tossed with bell peppers and onions."
+          },
+          "Chilli Paneer": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/08/Chilli-Paneer-2-3-500x500.jpg",
+            quantity: 0,
+            price: 200,
+            recipe: "Paneer cubes in a spicy sauce with vegetables."
+          },
+          "Veg Manchurian": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/veg-manchurian-recipe-500x500.jpg",
+            quantity: 0,
+            price: 180,
+            recipe: "Fried vegetable balls in a tangy sauce."
+          },
+          "Hakka Noodles": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/hakka-noodles-recipe-500x500.jpg",
+            quantity: 0,
+            price: 150,
+            recipe: "Stir-fried noodles with vegetables and sauces."
+          },
+          "Fried Rice": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/veg-fried-rice-recipe-500x500.jpg",
+            quantity: 0,
+            price: 160,
+            recipe: "Rice stir-fried with vegetables, eggs, or meat."
+          },
+          "Gobi Manchurian": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/gobi-manchurian-recipe-500x500.jpg",
+            quantity: 0,
+            price: 170,
+            recipe: "Cauliflower florets in a spicy, tangy sauce."
+          },
+          "Schezwan Noodles": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/schezwan-noodles-recipe-500x500.jpg",
+            quantity: 0,
+            price: 170,
+            recipe: "Noodles tossed in a spicy Schezwan sauce."
+          },
+          "Spring Rolls": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/spring-roll-recipe-500x500.jpg",
+            quantity: 0,
+            price: 120,
+            recipe: "Crispy rolls filled with vegetables or meat."
+          },
+          "Garlic Chicken": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/07/Garlic-Chicken-1-3-500x500.jpg",
+            quantity: 0,
+            price: 230,
+            recipe: "Chicken cooked with garlic and spices."
+          },
+          "Momos": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/04/Veg-Momos-2-3-500x500.jpg",
+            quantity: 0,
+            price: 100,
+            recipe: "Steamed or fried dumplings filled with vegetables or meat."
+          },
+          "Hot and Sour Soup": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/hot-and-sour-soup-recipe-500x500.jpg",
+            quantity: 0,
+            price: 90,
+            recipe: "A spicy and tangy soup made with vegetables and tofu or chicken."
+          },
+          "Paneer Fried Rice": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/paneer-fried-rice-recipe-500x500.jpg",
+            quantity: 0,
+            price: 180,
+            recipe: "Fried rice with paneer cubes and mixed vegetables."
+          },
+          "Schezwan Paneer": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/08/Schezwan-Paneer-2-3-500x500.jpg",
+            quantity: 0,
+            price: 210,
+            recipe: "Paneer cooked in a spicy Schezwan sauce with vegetables."
+          },
+          "Chowmein": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/chow-mein-recipe-500x500.jpg",
+            quantity: 0,
+            price: 160,
+            recipe: "Stir-fried noodles with a mix of vegetables and proteins."
+          },
+          "Manchow Soup": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/manchow-soup-recipe-500x500.jpg",
+            quantity: 0,
+            price: 90,
+            recipe: "A spicy soup with vegetables and fried noodles."
+          },
+          "Vegetable Spring Rolls": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/spring-roll-recipe-500x500.jpg",
+            quantity: 0,
+            price: 110,
+            recipe: "Crispy rolls filled with a mix of spiced vegetables."
+          },
+          "Chili Fish": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/07/Chilli-Fish-1-3-500x500.jpg",
+            quantity: 0,
+            price: 240,
+            recipe: "Fish pieces cooked in a spicy chili sauce with vegetables."
+          },
+          "Egg Fried Rice": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/egg-fried-rice-recipe-500x500.jpg",
+            quantity: 0,
+            price: 140,
+            recipe: "Fried rice with scrambled eggs and vegetables."
+          },
+          "Tandoori Momos": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/07/Tandoori-Momos-1-3-500x500.jpg",
+            quantity: 0,
+            price: 130,
+            recipe: "Grilled dumplings filled with vegetables or meat, served with chutney."
+          },
+          "Sweet and Sour Chicken": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/07/Sweet-And-Sour-Chicken-1-3-500x500.jpg",
+            quantity: 0,
+            price: 220,
+            recipe: "Chicken cooked in a sweet and tangy sauce with bell peppers."
+          }
+        }
+      },
+      "Continental-Dishes": {
+        name: "Continental Dishes",
+        items: {
+          "Pizza": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2015/10/pizza-recipe-1-500x500.jpg",
+            quantity: 0,
+            price: 250,
+            recipe: "Classic Italian dish with various toppings on a baked flatbread."
+          },
+          "Burger": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/veg-burger-recipe-500x500.jpg",
+            quantity: 0,
+            price: 120,
+            recipe: "Juicy patties served in a bun with toppings like lettuce, tomato, and cheese."
+          },
+          "French Fries": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/french-fries-recipe-500x500.jpg",
+            quantity: 0,
+            price: 80,
+            recipe: "Crispy potato strips, often seasoned and served as a side."
+          },
+          "Pasta": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/pasta-recipe-500x500.jpg",
+            quantity: 0,
+            price: 180,
+            recipe: "Spaghetti, penne, or macaroni served with sauces like marinara or Alfredo."
+          },
+          "Grilled Chicken": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/grilled-chicken-recipe-500x500.jpg",
+            quantity: 0,
+            price: 220,
+            recipe: "Marinated chicken grilled until tender and juicy."
+          },
+          "Fish and Chips": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/07/Fish-And-Chips-1-3-500x500.jpg",
+            quantity: 0,
+            price: 240,
+            recipe: "Battered and fried fish served with crispy fries."
+          },
+          "Tacos": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/veg-tacos-recipe-500x500.jpg",
+            quantity: 0,
+            price: 150,
+            recipe: "Mexican dish with tortillas filled with meat, cheese, lettuce, and salsa."
+          },
+          "Sushi": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/07/Sushi-1-3-500x500.jpg",
+            quantity: 0,
+            price: 300,
+            recipe: "Japanese dish of vinegared rice topped or rolled with seafood or vegetables."
+          },
+          "Bruschetta": {
+            image: "https://www.whiskaffair.com/wp-content/uploads/2020/07/Bruschetta-1-3-500x500.jpg",
+            quantity: 0,
+            price: 120,
+            recipe: "Toasted bread topped with chopped tomatoes, garlic, and fresh basil."
+          },
+          "Pancakes": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/pancake-recipe-500x500.jpg",
+            quantity: 0,
+            price: 100,
+            recipe: "Fluffy round cakes typically served with syrup, fruit, or butter."
+          }
+        }
+      },
+      "South-Indian-Dishes": {
+        name: "South Indian Dishes",
+        items: {
+          "Idli": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/idli-recipe-500x500.jpg",
+            quantity: 0,
+            price: 60,
+            recipe: "Steamed rice cakes, often served with sambar and coconut chutney."
+          },
+          "Dosa": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/dosa-recipe-500x500.jpg",
+            quantity: 0,
+            price: 80,
+            recipe: "Thin, crispy crepes made from fermented rice and lentil batter, served with chutneys and sambar."
+          },
+          "Vada": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/vada-recipe-500x500.jpg",
+            quantity: 0,
+            price: 50,
+            recipe: "Savory lentil doughnuts, typically served with sambar and chutney."
+          },
+          "Sambar": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/sambar-recipe-500x500.jpg",
+            quantity: 0,
+            price: 70,
+            recipe: "Lentil-based vegetable stew flavored with tamarind and a special blend of South Indian spices."
+          },
+          "Rasam": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/rasam-recipe-500x500.jpg",
+            quantity: 0,
+            price: 60,
+            recipe: "A tangy soup made with tamarind, tomatoes, and spices, often served as a starter or with rice."
+          },
+          "Uttapam": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/uttapam-recipe-500x500.jpg",
+            quantity: 0,
+            price: 90,
+            recipe: "Thick, soft pancakes made with rice and lentil batter, topped with chopped vegetables."
+          },
+          "Pongal": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/pongal-recipe-500x500.jpg",
+            quantity: 0,
+            price: 80,
+            recipe: "A comfort food made with rice and yellow moong dal, seasoned with black pepper, cumin, and ghee."
+          },
+          "Biryani": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/hyderabadi-biryani-recipe-500x500.jpg",
+            quantity: 0,
+            price: 220,
+            recipe: "Aromatic rice dish cooked with marinated meat or vegetables and signature South Indian spices."
+          },
+          "Appam": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/appam-recipe-500x500.jpg",
+            quantity: 0,
+            price: 100,
+            recipe: "Lacy-edged rice pancakes with a soft fluffy center, usually served with stew or coconut milk."
+          },
+          "Masala Dosa": {
+            image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/masala-dosa-recipe-500x500.jpg",
+            quantity: 0,
+            price: 120,
+            recipe: "Crispy dosa filled with a spiced potato mash, served with sambar and coconut chutney."
+          }
+        }
+      }      
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryId = urlParams.get('category');
+    
+    // Redirect if invalid category
+    if (!categoryId || !foodData[categoryId]) {
+      window.location.href = "index.html";
+    }
+
+    const category = foodData[categoryId];
+    const categoryTitle = document.getElementById('categoryTitle');
+    const foodItemsContainer = document.getElementById('foodItems');
+    const categoryDescription = document.getElementById('categoryDescription');
+
+    categoryTitle.textContent = category.name;
+    categoryDescription.textContent = `This category contains some of the best ${category.name.toLowerCase()}, made with authentic ingredients and flavors.`;
+
+    // Render food items
+    for (let item in category.items) {
+      const { image, quantity, price, recipe } = category.items[item];
+      const itemBlock = `
+        <div class="bg-white bg-opacity-10 rounded-lg p-4 shadow-lg hover:shadow-xl transition transform hover:-translate-y-1">
+          <img src="${image}" alt="${item}" class="w-full h-40 object-cover mb-4 rounded-md">
+          <h3 class="text-xl font-semibold text-yellow-300">${item}</h3>
+          <p class="text-lg font-bold text-yellow-400">Rs ${price}</p>
+          <p class="text-sm text-gray-300 mt-1">Quantity: 
+            <input type="number" 
+                   value="${quantity}" 
+                   class="w-16 p-1 rounded text-black" 
+                   min="0" 
+                   data-item="${encodeURIComponent(item)}"
+                   onchange="updateQuantity(this)"/>
+          </p>
+          <p class="mt-2 text-gray-300 text-sm">${recipe}</p>
+        </div>
+      `;
+      foodItemsContainer.innerHTML += itemBlock;
+    }
+
+    // Update quantity in foodData when input changes
+    function updateQuantity(input) {
+      const itemName = decodeURIComponent(input.dataset.item);
+      const quantity = parseInt(input.value) || 0;
+      category.items[itemName].quantity = quantity;
+    }
+
+    // Submit order function
+    function submitOrder() {
+  console.log("Submit Order Clicked");
+
+  const selectedItems = [];
+
+  for (let item in category.items) {
+    if (category.items[item].quantity > 0) {
+      selectedItems.push({
+        name: item,
+        quantity: category.items[item].quantity,
+        price: category.items[item].price,
+        image: category.items[item].image
+      });
+    }
+  }
+
+  if (selectedItems.length === 0) {
+    alert("Please select at least one item to proceed.");
+    return;
+  }
+
+  // Save to localStorage and redirect
+  localStorage.setItem("selectedOrder", JSON.stringify({
+    category: category.name,
+    items: selectedItems
+  }));
+
+  window.location.href = "summary.html";
+}
+
+// PASTE THIS LINE RIGHT HERE AFTER submitOrder()
+document.getElementById('placeOrderBtn').addEventListener('click', submitOrder);
+
+    // Logout button functionality
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      // Clear cart and redirect
+      localStorage.removeItem('selectedOrder');
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
